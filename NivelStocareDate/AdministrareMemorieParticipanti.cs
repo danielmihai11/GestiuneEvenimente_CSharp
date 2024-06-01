@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,31 +9,40 @@ using LibrarieModele;
 
 namespace NivelStocareDate
 {
-    public class AdministrareMemorieParticipanti
+    public class AdministrareMemorieParticipanti : IStocareDataParticipanti
     {
-        private const int NR_MAX_PARTICIPANTI = 50;
 
-        private Participant[] participanti;
-        private int nrParticipanti;
+
+        private List<Participant> participanti;
 
         public AdministrareMemorieParticipanti()
         {
-            participanti = new Participant[NR_MAX_PARTICIPANTI];
-            nrParticipanti = 0;
+            participanti = new List<Participant>();
         }
 
-        public void AddParticipanti(Participant participant)
+        public void AddParticipant(Participant participant)
         {
-            participanti[nrParticipanti] = participant;
-            nrParticipanti++;
+            participanti.Add(participant);
         }
-
-        public Participant[] GetParticipanti(out int nrParticipanti)
+      
+        public List<Participant> GetParticipanti()
         {
-            nrParticipanti = this.nrParticipanti;
             return participanti;
         }
 
-        
+        public List<Participant> GetParticipantEveniment(string eveniment)
+        {
+            throw new Exception("Optiunea GetParticipantEveniment nu este implementata");
+        }
+
+        public bool UpdateParticipant(Participant p)
+        {
+            throw new Exception("Optiunea UpdateParticipant nu este implementata");
+        }
+
+
     }
+
+        
+    
 }

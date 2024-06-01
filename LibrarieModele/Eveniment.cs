@@ -7,13 +7,10 @@ using LibrarieModele.Enumerari;
 
 namespace LibrarieModele
 {
-   
+    [Serializable]
     public class Eveniment
     {
         private const char SEPARATOR_PRINCIPAL_FISIER = ';';
-
-
-       //private const int ID = 0;
         private const int DENUMIRE = 0;
         private const int DATA = 1;
         private const int LOCATIE = 2;
@@ -29,14 +26,6 @@ namespace LibrarieModele
 
         public string ora { get; set; }
        
-       
-      
-
-
-
-
-
-        //Constructor fara parametri
         public Eveniment()
         {
             denumire = string.Empty;
@@ -46,7 +35,6 @@ namespace LibrarieModele
            
         }
 
-        //Constructor cu parametri
         public Eveniment(string _denumire, string _data, string _locatie,string _ora)
         {
             denumire = _denumire;
@@ -57,22 +45,22 @@ namespace LibrarieModele
 
 
         }
+       
         public string Info()
         {
-            if (denumire == string.Empty)
-                return $"EVENIMENT NEEXISTENT";
+            string info;
+            if (denumire == null)
+                 info =  $"Evenimentul {denumire} nu exista!";
             else
-                return $"Denumire: {denumire}\nData:{data}\nOra:{ora}\nLocatie:{locatie}\nTip eveniment: {tip}";
+                info =  $"Denumire: {denumire}\nData:{data}\nOra:{ora}\nLocatie:{locatie}\nTip eveniment: {tip}";
 
-
+            return info;
         }
 
         public Eveniment(string linieFisier)
         {
 
             var dateFisier = linieFisier.Split(SEPARATOR_PRINCIPAL_FISIER);
-            //ordinea de preluare a campurilor este data de ordinea in care au fost scrise in fisier prin apelul implicit al metodei ConversieLaSir_PentruFisier()
-            ///this.id_eveniment = Convert.ToInt32(dateFisier[ID]);
             this.denumire = dateFisier[DENUMIRE];
             this.data = dateFisier[DATA];
             this.locatie = dateFisier[LOCATIE];
@@ -85,7 +73,6 @@ namespace LibrarieModele
         {
             string obiectEvenimentePentruFisier = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}",
                 SEPARATOR_PRINCIPAL_FISIER,
-                // id_eveniment.ToString(),
                 (denumire ?? " NECUNOSCUT "),
                 (data ?? "NECUNOSCUT"),
                 (locatie ?? "NECUNOSCUT"),
@@ -93,6 +80,10 @@ namespace LibrarieModele
                 tip);
 
             return obiectEvenimentePentruFisier;
+        }
+        public override string ToString()
+        {
+            return Info();
         }
     }
 }

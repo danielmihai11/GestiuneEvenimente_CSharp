@@ -43,8 +43,12 @@
   <ItemGroup>
     <Compile Include="AdministrareMemorieEvenimente.cs" />
     <Compile Include="AdministrareMemorieEvenimente_Fisier.cs" />
+    <Compile Include="AdministrareMemorieEvenimente_FisierBinar.cs" />
     <Compile Include="AdministrareMemorieParticipanti.cs" />
     <Compile Include="AdministrareMemorieParticipanti_Fisier.cs" />
+    <Compile Include="AdministrareMemorieParticipanti_FisierBinar.cs" />
+    <Compile Include="IStocareDataEvenimente.cs" />
+    <Compile Include="IStocareDataParticipanti.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

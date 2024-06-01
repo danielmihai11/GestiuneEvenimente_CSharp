@@ -7,29 +7,54 @@ using LibrarieModele;
 
 namespace NivelStocareDate
 {
-    public class AdministrareMemorieEvenimente
+    public class AdministrareMemorieEvenimente : IStocareDataEvenimente
     {
-        private const int NR_MAX_EVENIMENTE = 100;
+        private List<Eveniment> evenimente;
 
-        private Eveniment[] evenimente;
-        private int nrEvenimente;
 
         public AdministrareMemorieEvenimente()
         {
-            evenimente = new Eveniment[NR_MAX_EVENIMENTE];
-            nrEvenimente = 0;
+            evenimente = new List<Eveniment>();
         }
 
-        public void AddEvenimente(Eveniment eveniment)
+        public void AddEveniment(Eveniment eveniment)
         {
-            evenimente[nrEvenimente] = eveniment;
-            nrEvenimente++;
+            evenimente.Add(eveniment);
         }
 
-        public Eveniment[] GetEvenimente(out int nrEvenimente)
+        public List<Eveniment> GetEvenimente()
         {
-            nrEvenimente = this.nrEvenimente;
             return evenimente;
         }
+        
+        public List<Eveniment> GetEvenimentDenumire(string denumire)
+        {
+            throw new Exception("Optiunea GetEvenimentDenumire nu este implementata");
+        }
+
+        public List<Eveniment> GetEvenimentData(string data)
+        {
+            throw new Exception("Optiunea GetEvenimentData nu este implementata");
+        }
+
+        public List<Eveniment> GetEvenimentLocatie(string locatie)
+        {
+            throw new Exception("Optiunea GetEvenimentLocatie nu este implementata");
+        }
+        public void UpdateEveniment(Eveniment e)
+        {
+            throw new Exception("Optiunea UpdateEveniment nu este implementata");
+        }
+        public void StergeEveniment(string denumire)
+        {
+            throw new Exception("Optiunea StergeEveniment nu este implementata");
+        }
+
+        public List<Eveniment> GetEvenimentTip(string tip)
+        {
+            throw new Exception("Optiunea GetEveniment nu este implementata");
+        }
+
+
     }
 }

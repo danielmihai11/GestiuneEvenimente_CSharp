@@ -1,168 +1,151 @@
-﻿using System;
+﻿using LibrarieModele;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LibrarieModele;
 
 namespace NivelStocareDate
 {
-    public class AdministrareMemorieEvenimente_Fisier
+    public class AdministrareMemorieEvenimente_Fisier : IStocareDataEvenimente
     {
-        private const int NR_MAX_EVENIMENTE = 100;
         private string numeFisierE;
 
         public AdministrareMemorieEvenimente_Fisier(string numeFisierE)
         {
             this.numeFisierE = numeFisierE;
-            // se incearca deschiderea fisierului in modul OpenOrCreate
-            // astfel incat sa fie creat daca nu exista
             Stream streamFisierText = File.Open(numeFisierE, FileMode.OpenOrCreate);
             streamFisierText.Close();
         }
 
-
-        /*public int GetLastId()
+        public List<Eveniment> GetEvenimente()
         {
-            int lastID = 0;
+            List<Eveniment> evenimente = new List<Eveniment>();
+
+           
             using (StreamReader streamReader = new StreamReader(numeFisierE))
             {
                 string linieFisier;
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
-                    lastID++;
-                }
-            }
-            return lastID;
-        }*/
-        public Eveniment[] GetEvenimente(out int nrEvenimente)
-        {
-            Eveniment[] evenimente = new Eveniment[NR_MAX_EVENIMENTE];
-
-            // instructiunea 'using' va apela streamReader.Close()
-            using (StreamReader streamReader = new StreamReader(numeFisierE))
-            {
-                string linieFisier;
-                nrEvenimente = 0;
-
-                // citeste cate o linie si creaza un obiect de tip Participant
-                // pe baza datelor din linia citita
-                while ((linieFisier = streamReader.ReadLine()) != null)
-                {
-                    evenimente[nrEvenimente++] = new Eveniment(linieFisier);
+                    evenimente.Add(new Eveniment(linieFisier));
+                   
                 }
             }
 
             return evenimente;
         }
-      
-        public void AddEvenimente(Eveniment eveniment)
+
+        public void AddEveniment(Eveniment eveniment)
         {
-            // instructiunea 'using' va apela la final streamWriterFisierText.Close();
-            // al doilea parametru setat la 'true' al constructorului StreamWriter indica
-            // modul 'append' de deschidere al fisierului
             using (StreamWriter streamWriterFisierText = new StreamWriter(numeFisierE, true))
             {
                 streamWriterFisierText.WriteLine(eveniment.ConversieLaSir_PentruFisierE());
             }
+       
         }
 
-
-
-        public Eveniment[] CautareDupaDenumire(string denumireCautata, int nrEvenimente)
+        public List<Eveniment> GetEvenimentDenumire(string denumire)
         {
-            List<Eveniment> evenimenteGasite = new List<Eveniment>();
-
-            // deschide fisierul si citeste fiecare linie
+            List<Eveniment> evenimente = new List<Eveniment>();
             using (StreamReader streamReader = new StreamReader(numeFisierE))
             {
                 string linieFisier;
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
                     Eveniment eveniment = new Eveniment(linieFisier);
-                    if (eveniment.denumire == denumireCautata)
+                    if (eveniment.denumire.Equals(denumire, StringComparison.OrdinalIgnoreCase))
                     {
-                        // adauga evenimentul gasit in lista
-                        evenimenteGasite.Add(eveniment);
+                        evenimente.Add(eveniment);
                     }
                 }
             }
-
-            // converteste lista de evenimente gasite in vector de evenimente si returneaza
-            return evenimenteGasite.ToArray();
+            return evenimente;
         }
-
-        public Eveniment[] CautareDupaData(string dataCautata, int nrEvenimente)
+        public List<Eveniment> GetEvenimentData(string data)
         {
-            List<Eveniment> evenimenteGasite = new List<Eveniment>();
-
-            // deschide fisierul si citeste fiecare linie
+            List<Eveniment> evenimente = new List<Eveniment>();
             using (StreamReader streamReader = new StreamReader(numeFisierE))
             {
                 string linieFisier;
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
                     Eveniment eveniment = new Eveniment(linieFisier);
-                    if (eveniment.data == dataCautata)
+                    if (eveniment.data.Equals(data))
                     {
-                        // adauga evenimentul gasit in lista
-                        evenimenteGasite.Add(eveniment);
+                        evenimente.Add(eveniment);
                     }
                 }
             }
+            return evenimente;
 
-            // converteste lista de evenimente gasite in vector de evenimente si returneaza
-            return evenimenteGasite.ToArray();
+
         }
 
-        public Eveniment[] CautareDupaLocatie(string locatieCautata, int nrEvenimente)
+        public List<Eveniment> GetEvenimentLocatie(string locatie)
         {
-            List<Eveniment> evenimenteGasite = new List<Eveniment>();
-
-            // deschide fisierul si citeste fiecare linie
+            List<Eveniment> evenimente = new List<Eveniment>();
             using (StreamReader streamReader = new StreamReader(numeFisierE))
             {
                 string linieFisier;
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
                     Eveniment eveniment = new Eveniment(linieFisier);
-                    if (eveniment.locatie == locatieCautata)
+                    if (eveniment.locatie.Equals(locatie))
                     {
-                        // adauga evenimentul gasit in lista
-                        evenimenteGasite.Add(eveniment);
+                        evenimente.Add(eveniment);
                     }
                 }
             }
+            return evenimente;
 
-            // converteste lista de evenimente gasite in vector de evenimente si returneaza
-            return evenimenteGasite.ToArray();
+
         }
 
-        public Eveniment[] CautareDupaOra(string oraCautata, int nrEvenimente)
-        {
-            List<Eveniment> evenimenteGasite = new List<Eveniment>();
 
-            // deschide fisierul si citeste fiecare linie
+        public List<Eveniment> GetEvenimentTip(string tip)
+        {
+            List<Eveniment> evenimente = new List<Eveniment>();
             using (StreamReader streamReader = new StreamReader(numeFisierE))
             {
                 string linieFisier;
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
                     Eveniment eveniment = new Eveniment(linieFisier);
-                    if (eveniment.ora == oraCautata)
+                    if (eveniment.tip.ToString().Equals(tip, StringComparison.OrdinalIgnoreCase))
                     {
-                        // adauga evenimentul gasit in lista
-                        evenimenteGasite.Add(eveniment);
+                        evenimente.Add(eveniment);
                     }
                 }
             }
-
-            // converteste lista de evenimente gasite in vector de evenimente si returneaza
-            return evenimenteGasite.ToArray();
+            return evenimente;
         }
 
+        public void StergeEveniment(string denumire)
+        {
+            List<Eveniment> evenimente = GetEvenimente();
+            evenimente.RemoveAll(e => e.denumire == denumire);
+            SaveEvenimente(evenimente);
+        }
+        public void UpdateEveniment(Eveniment eveniment)
+        {
+            List<Eveniment> evenimente = GetEvenimente();
+            int index = evenimente.FindIndex(e => e.denumire == eveniment.denumire);
+            if (index >=0)
+            {
+                evenimente[index] = eveniment;
+                SaveEvenimente(evenimente);
+            }
+        }
 
+        private void SaveEvenimente(List<Eveniment> evenimente)
+        {
+            using (StreamWriter sw = new StreamWriter(numeFisierE, false))
+            {
+                foreach (Eveniment eveniment in evenimente)
+                {
+                    sw.WriteLine(eveniment.ConversieLaSir_PentruFisierE());
+                }
+            }
+        }
 
 
     }

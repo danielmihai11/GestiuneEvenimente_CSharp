@@ -9,158 +9,64 @@ using LibrarieModele.Enumerari;
 
 namespace NivelStocareDate
 {
-    public class AdministrareMemorieParticipanti_Fisier
+    public class AdministrareMemorieParticipanti_Fisier : IStocareDataParticipanti
     {
-        private const int NR_MAX_PARTICIPANTI = 50;
         private string numeFisierP;
 
         public AdministrareMemorieParticipanti_Fisier(string numeFisierP)
         {
             this.numeFisierP = numeFisierP;
-            // se incearca deschiderea fisierului in modul OpenOrCreate
-            // astfel incat sa fie creat daca nu exista
             Stream streamFisierText = File.Open(numeFisierP, FileMode.OpenOrCreate);
             streamFisierText.Close();
         }
 
     
 
-        public Participant[] GetParticipanti(out int nrParticipanti)
+        public List<Participant> GetParticipanti()
         {
-            Participant[] participanti = new Participant[NR_MAX_PARTICIPANTI];
-
-            // instructiunea 'using' va apela streamReader.Close()
+            List<Participant> participanti = new List<Participant>();
             using (StreamReader streamReader = new StreamReader(numeFisierP))
             {
                 string linieFisier;
-                nrParticipanti = 0;
-
-                // citeste cate o linie si creaza un obiect de tip Participant
-                // pe baza datelor din linia citita
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
-                    participanti[nrParticipanti++] = new Participant(linieFisier);
+                    participanti.Add(new Participant(linieFisier));
                 }
             }
 
             return participanti;
         }
-        /*public int GetLastId()
+        
+        public void AddParticipant(Participant participant)
         {
-            int lastID = 0;
-            using (StreamReader streamReader = new StreamReader(numeFisier))
-            {
-                string linieFisier;
-                while ((linieFisier = streamReader.ReadLine()) != null)
-                {
-                    lastID++;
-                }
-            }
-            return lastID;
-        }
-        */
-        public void AddParticipanti(Participant participant)
-        {
-            // instructiunea 'using' va apela la final streamWriterFisierText.Close();
-            // al doilea parametru setat la 'true' al constructorului StreamWriter indica
-            // modul 'append' de deschidere al fisierului
             using (StreamWriter streamWriterFisierText = new StreamWriter(numeFisierP, true))
             {
                 streamWriterFisierText.WriteLine(participant.ConversieLaSir_PentruFisier());
             }
         }
 
-
-        public Participant[] CautareDupaNume(string numeCautat)
+        public List<Participant> GetParticipantEveniment(string eveniment)
         {
-            List<Participant> participantiGasiti = new List<Participant>();
-
-            // deschide fisierul si citeste fiecare linie
+            List<Participant> participanti = new List<Participant>();
             using (StreamReader streamReader = new StreamReader(numeFisierP))
             {
                 string linieFisier;
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
                     Participant participant = new Participant(linieFisier);
-                    if (participant.nume == numeCautat)
+                    if (participant.eveniment == eveniment)
                     {
-                        // adauga evenimentul gasit in lista
-                        participantiGasiti.Add(participant);
+                        participanti.Add(participant);
                     }
                 }
             }
+            return participanti;
 
-            // converteste lista de evenimente gasite in vector de evenimente si returneaza
-            return participantiGasiti.ToArray();
+            
         }
-
-        public Participant[] CautareDupaPrenume(string prenumeCautat, int nrParticipanti)
+        public bool UpdateParticipant(Participant participantActualizat)
         {
-            List<Participant> participantiGasiti = new List<Participant>();
-
-            // deschide fisierul si citeste fiecare linie
-            using (StreamReader streamReader = new StreamReader(numeFisierP))
-            {
-                string linieFisier;
-                while ((linieFisier = streamReader.ReadLine()) != null)
-                {
-                    Participant participant = new Participant(linieFisier);
-                    if (participant.prenume == prenumeCautat)
-                    {
-                        // adauga evenimentul gasit in lista
-                        participantiGasiti.Add(participant);
-                    }
-                }
-            }
-
-            // converteste lista de evenimente gasite in vector de evenimente si returneaza
-            return participantiGasiti.ToArray();
-        }
-
-        public Participant[] CautareDupaVarsta(int varstaCautata, int nrParticipanti)
-        {
-            List<Participant> participantiGasiti = new List<Participant>();
-
-            // deschide fisierul si citeste fiecare linie
-            using (StreamReader streamReader = new StreamReader(numeFisierP))
-            {
-                string linieFisier;
-                while ((linieFisier = streamReader.ReadLine()) != null)
-                {
-                    Participant participant = new Participant(linieFisier);
-                    if (participant.varsta == varstaCautata)
-                    {
-                        // adauga evenimentul gasit in lista
-                        participantiGasiti.Add(participant);
-                    }
-                }
-            }
-
-            // converteste lista de evenimente gasite in vector de evenimente si returneaza
-            return participantiGasiti.ToArray();
-        }
-
-        public Participant[] CautareDupaEveniment(string evenimentCautat)
-        {
-            List<Participant> participantiGasiti = new List<Participant>();
-
-            // deschide fisierul si citeste fiecare linie
-            using (StreamReader streamReader = new StreamReader(numeFisierP))
-            {
-                string linieFisier;
-                while ((linieFisier = streamReader.ReadLine()) != null)
-                {
-                    Participant participant = new Participant(linieFisier);
-                    if (participant.eveniment == evenimentCautat)
-                    {
-                        // adauga evenimentul gasit in lista
-                        participantiGasiti.Add(participant);
-                    }
-                }
-            }
-
-            // converteste lista de evenimente gasite in vector de evenimente si returneaza
-            return participantiGasiti.ToArray();
+            throw new Exception("Optiunea UpdateParticipant nu este implementata");
         }
     }
 }
